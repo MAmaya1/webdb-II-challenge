@@ -6,6 +6,7 @@ const server = express();
 // Import Routers
 
 const zoosRouter = require('./zoos/zoos-router');
+const bearsRouter = require('./bears/bears-router');
 
 // Middleware
 
@@ -19,5 +20,6 @@ server.get('/', (req, res) => {
 })
 
 server.use('/api/zoos', zoosRouter);
+server.use('/api/bears', bearsRouter);
 
 module.exports = server;

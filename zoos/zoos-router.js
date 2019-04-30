@@ -8,8 +8,8 @@ const knex = require('knex');
 
 // Configure Knex
 
-const knexConfig = {
-    client: 'sqlite3',
+const knexConfig = { //configuration object
+    client: 'sqlite3', 
     connection: {
         filename: './data/lambda.sqlite3'
     },
@@ -56,8 +56,16 @@ router.post('/', (req, res) => {
     } else {
         db('zoos')
             .insert(req.body, 'id')
-            .then(zoo => {
-                res.status(201).json(zoo)
+            .then(ids => { //ids are coming back from the .insert returning method above
+                db('zoos')
+                    .where({ id: ids[0] })
+                    .first()
+                    .then(zoo => {
+                        res.status(201).json(zoo)
+                    })
+                    .catch(err => {
+                        res.status(500).json({ error: err, message: 'Zoo could not be added to the database.' })
+                    })
             })
             .catch(err => {
                 res.status(500).json({ error: err, message: 'Zoo could not be added to the database.' })
