@@ -65,4 +65,22 @@ router.post('/', (req, res) => {
     }
 })
 
+// PUT (update zoo )
+
+router.put('/:id', (req, res) => {
+    db('zoos')
+        .where({ id: req.params.id })
+        .update(req.body)
+        .then(count => {
+            if (count > 0) {
+                res.status(201).json({ message: `${count} ${count > 1 ? 'records' : 'record'} updated.` })
+            } else {
+                res.status(404).json({ errorMessage: 'A zoo with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: err, message: 'Could not add changes to database.' })
+        })
+})
+
 module.exports = router;
