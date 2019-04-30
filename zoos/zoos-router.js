@@ -83,4 +83,22 @@ router.put('/:id', (req, res) => {
         })
 })
 
+// DELETE zoo
+
+router.delete('/:id', (req, res) => {
+    db('zoos')
+        .where({ id: req.params.id })
+        .del(req.body)
+        .then(count => {
+            if (count > 0) {
+                res.status(200).json({ message: `${count} ${count > 1 ? 'records' : 'record'} deleted.` })
+            } else {
+                res.status(404).json({ errorMessage: 'A zoo with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: err, message: 'Zoo could not be deleted from the database.' })
+        })
+})
+
 module.exports = router;
