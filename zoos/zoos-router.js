@@ -48,5 +48,21 @@ router.get('/:id', (req, res) => {
         })
 })
 
+// POST (add new zoo)
+
+router.post('/', (req, res) => {
+    if (!req.body.name) {
+        res.status(400).json({ errorMessage: 'Zoo requires a name.' })
+    } else {
+        db('zoos')
+            .insert(req.body, 'id')
+            .then(zoo => {
+                res.status(201).json(zoo)
+            })
+            .catch(err => {
+                res.status(500).json({ error: err, message: 'Zoo could not be added to the database.' })
+            })
+    }
+})
 
 module.exports = router;
