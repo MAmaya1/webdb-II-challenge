@@ -68,7 +68,7 @@ router.post('/', (req, res) => {
                     })
             })
             .catch(err => {
-                res.status(500).json({ error: err, message: 'Zoo could not be added to the database.' })
+                res.status(500).json({ error: err, message: 'A zoo with this name already exists in the database.' })
             })
     }
 })
