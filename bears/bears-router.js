@@ -30,4 +30,23 @@ router.get('/', (req, res) => {
         })
 })
 
+// GET bears by id
+
+router.get('/:id', (req, res) => {
+    db('bears')
+        .where({ id: req.params.id })
+        .first()
+        .then(bear => {
+            if (bear) {
+                res.status(201).json(bear)
+            } else {
+                res.status(404).json({ errorMessage:  'Bear species with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ errorMessage: 'Bear data could not be retrieved.' })
+        })
+        
+})
+
 module.exports = router;
