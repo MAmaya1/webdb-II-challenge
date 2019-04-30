@@ -49,4 +49,29 @@ router.get('/:id', (req, res) => {
         
 })
 
+// POST (add new bear)
+
+router.post('/', (req, res) => {
+    if (!req.body.species) {
+        res.status(400).json({ errorMessage: 'Bear data requires a species.' })
+    } else {
+        db('bears')
+            .insert(req.body, 'id')
+            .then(ids => {
+                db('bears')
+                    .where({ id: ids[0] })
+                    .first()
+                    .then(zoo => {
+                        res.status(201).json(zoo)
+                    })
+                    .catch(err => {
+                        res.status(500).json({ error: err, message: 'Bear could not be added to the database.' })
+                    })
+            })
+            .catch(err => {
+                res.status(500).json({ error: err, message: 'Bear could not be added to the database.' })
+            })
+    }
+})
+
 module.exports = router;
