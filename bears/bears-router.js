@@ -77,7 +77,10 @@ router.post('/', (req, res) => {
 // PUT (update bear)
 
 router.put('/:id', (req, res) => {
-    db('bears')
+    if (!req.body.species) {
+        res.status(400).json({ errorMessage: 'Bear data requires a species.' })
+    } else {
+        db('bears')
         .where({ id: req.params.id })
         .update(req.body)
         .then(count => {
@@ -90,6 +93,7 @@ router.put('/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: err, message: 'Bear data could not be updated.'})
         })
+    }
 })
 
 // DELETE bear

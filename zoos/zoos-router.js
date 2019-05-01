@@ -76,7 +76,10 @@ router.post('/', (req, res) => {
 // PUT (update zoo )
 
 router.put('/:id', (req, res) => {
-    db('zoos')
+    if (!req.body.name) {
+        res.status(400).json({ errorMessage: 'Zoo requires a name.' })
+    } else {
+        db('zoos')
         .where({ id: req.params.id })
         .update(req.body)
         .then(count => {
@@ -89,6 +92,7 @@ router.put('/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ error: err, message: 'Could not add changes to database.' })
         })
+    }
 })
 
 // DELETE zoo
