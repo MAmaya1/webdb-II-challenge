@@ -92,4 +92,22 @@ router.put('/:id', (req, res) => {
         })
 })
 
+// DELETE bear
+
+router.delete('/:id', (req, res) => {
+    db('bears')
+        .where({ id: req.params.id })
+        .del(req.body)
+        .then(count => {
+            if (count) {
+                res.status(200).json({ message: `${count} ${count > 1 ? 'records' : 'record'} deleted.` })
+            } else {
+                res.status(404).json({ message: 'A bear species with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ errorMessage: 'Bear data could not be deleted from the database.' })
+        })
+})
+
 module.exports = router;
