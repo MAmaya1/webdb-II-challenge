@@ -74,4 +74,22 @@ router.post('/', (req, res) => {
     }
 })
 
+// PUT (update bear)
+
+router.put('/:id', (req, res) => {
+    db('bears')
+        .where({ id: req.params.id })
+        .update(req.body)
+        .then(count => {
+            if (count > 0) {
+                res.status(201).json({ message: `${count} ${count > 1 ? 'records' : 'record'} updated.` })
+            } else {
+                res.status(404).json({ errorMessage: 'A bear species with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: err, message: 'Bear data could not be updated.'})
+        })
+})
+
 module.exports = router;
